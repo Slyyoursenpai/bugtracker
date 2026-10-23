@@ -1,8 +1,8 @@
-type  Severity = "low" | "medium" | "high" | "critical";
+export type Severity = "low" | "medium" | "high" | "critical";
 
-type BugStatus = "open" | "in progress" | "resolved" | "closed" | "duplicate";
+export type BugStatus = "open" | "in progress" | "resolved" | "closed" | "duplicate";
 
-interface Bug {
+export interface Bug {
     id: string;
     title: string;
     description: string;
