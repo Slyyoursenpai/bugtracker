@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini Bug Tracker</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <h1>Mini Bug Tracker</h1>
+
+      <form id="bug-form" class="bug-form">
+        <input id="title-input" type="text" placeholder="Title" required />
+        <textarea id="description-input" placeholder="Description" required></textarea>
+        <select id="severity-input">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+          <option value="critical">Critical</option>
+        </select>
+        <button type="submit">Add bug</button>
+      </form>
+
+      <ul id="bug-list" class="bug-list"></ul>
+    </main>
+
+    <script type="module" src="./dist/main.js"></script>
+  </body>
+</html>
