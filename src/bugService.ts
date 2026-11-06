@@ -75,18 +75,3 @@ export function sortBugs(bugs: Bug[], by: "createdAt" | "severity"): Bug[] {
 }
 
 
-
-///// demo run for test
-/**const sample = createBug("Sample Bug", "This is a sample bug description.", "high");
-
-const bugs: Bug[] = [];
-const after = addBug(bugs, sample);
-const changed = updateStatus(after, after[0].id, "resolved");
-const removed = deleteBug(after, after[0].id); **/
-
-/**const edited = editBug(after, after[0].id, {
-  title: "New title",
-  description: "Updated description",
-  severity: "low",
-}); **/
-

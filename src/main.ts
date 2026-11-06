@@ -1,4 +1,4 @@
-import { addBug, createBug, updateStatus } from "./bugService.js";
+import { addBug, createBug, updateStatus, deleteBug } from "./bugService.js";
 import type { Bug, Severity, BugStatus } from "./types.js";
 
 const listElement = document.getElementById("bug-list");
@@ -60,6 +60,15 @@ function renderBugs(): void {
 
     item.appendChild(select);
     list.appendChild(item);
+
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => {
+      bugs = deleteBug(bugs, bug.id);
+      renderBugs()
+    });
+    item.appendChild(deleteButton);
   } 
 }
 
