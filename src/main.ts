@@ -1,4 +1,4 @@
-import { addBug, createBug, updateStatus, deleteBug } from "./bugService.js";
+import { addBug, createBug, updateStatus, deleteBug, editBug } from "./bugService.js";
 import type { Bug, Severity, BugStatus } from "./types.js";
 
 const listElement = document.getElementById("bug-list");
@@ -8,29 +8,34 @@ if (!(listElement instanceof HTMLUListElement)) {
 const list: HTMLUListElement = listElement;
 
 const form = document.getElementById("bug-form");
-const titleInput = document.getElementById("title-input");
-const descriptionInput = document.getElementById("description-input");
-const severityInput = document.getElementById("severity-input");
+const titleEl = document.getElementById("title-input");
+const descriptionEl = document.getElementById("description-input");
+const severityEl = document.getElementById("severity-input");
 const STATUSES: BugStatus[] = ["open", "in progress", "resolved", "closed", "duplicate"];
 
 if (!(form instanceof HTMLFormElement)) {
   throw new Error("Could not find #bug-form in the page");
 }
-if (!(titleInput instanceof HTMLInputElement)) {
+if (!(titleEl instanceof HTMLInputElement)) {
   throw new Error("Could not find #title-input in the page");
 }
-if (!(descriptionInput instanceof HTMLTextAreaElement)) {
+if (!(descriptionEl instanceof HTMLTextAreaElement)) {
   throw new Error("Could not find #description-input in the page");
 }
-if (!(severityInput instanceof HTMLSelectElement)) {
+if (!(severityEl instanceof HTMLSelectElement)) {
   throw new Error("Could not find #severity-input in the page");
 }
+
+const titleInput: HTMLInputElement = titleEl;
+const descriptionInput: HTMLTextAreaElement = descriptionEl;
+const severityInput: HTMLSelectElement = severityEl;
 
 function isSeverity(value: string): value is Severity {
   return value === "low" || value === "medium" || value === "high" || value === "critical";
 }
 
 let bugs: Bug[] = []
+let editingId: string | null = null;
 
 function renderBugs(): void {
   list.replaceChildren();
@@ -69,7 +74,18 @@ function renderBugs(): void {
       renderBugs()
     });
     item.appendChild(deleteButton);
-  } 
+
+    const editButton = document.createElement("button");
+    editButton.type = "button";
+    editButton.textContent = "Edit";
+    editButton.addEventListener("click", () => {
+      titleInput.value = bug.title;
+      descriptionInput.value = bug.description;
+      severityInput.value = bug.severity;
+      editingId = bug.id;
+    });
+    item.appendChild(editButton);
+  }
 }
 
 function isStatus(value: string): value is BugStatus {
@@ -86,7 +102,13 @@ form.addEventListener("submit", (event) => {
     return;
   }
 
-bugs = addBug(bugs, createBug(title, description, severity));
+//bugs = addBug(bugs, createBug(title, description, severity));
+if (editingId === null){
+  bugs = addBug(bugs, createBug(title, description, severity));
+} else {
+  bugs = editBug(bugs, editingId, {title, description, severity});
+  editingId = null;
+}
 renderBugs();
 form.reset();
 });
